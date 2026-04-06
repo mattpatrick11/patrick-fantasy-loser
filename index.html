@@ -1,284 +1,620 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🏆 2025 Fantasy Football Loser 🏆</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patrick Family Fantasy Football & 5K Race Finder</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;700&family=Roboto:wght@400;700&display=swap');
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
+    /* ── Reset & Base ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:        #0f1117;
+      --bg2:       #1a1d27;
+      --bg3:       #22263a;
+      --border:    #2e3350;
+      --accent:    #6c8aff;
+      --accent2:   #a78bfa;
+      --gold:      #f4c542;
+      --gold2:     #e8a820;
+      --green:     #34d399;
+      --text:      #e2e8f0;
+      --muted:     #8892a4;
+      --danger:    #f87171;
+      --radius:    12px;
+      --shadow:    0 8px 32px rgba(0,0,0,0.45);
+    }
+    html { font-size: 16px; scroll-behavior: smooth; }
     body {
-      background: #0a0a0a;
-      color: #fff;
-      font-family: 'Roboto', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow-x: hidden;
-      background-image: radial-gradient(ellipse at center, #1a0505 0%, #0a0a0a 70%);
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout ────────────────────────────────────────────── */
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 3.5rem 0;
     }
 
-    .confetti-bg {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      pointer-events: none;
-      z-index: 0;
-      background: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 40px,
-        rgba(255,0,0,0.03) 40px,
-        rgba(255,0,0,0.03) 80px
-      );
-    }
-
-    .container {
+    /* ── FANTASY SECTION ───────────────────────────────────── */
+    .ff-header {
+      text-align: center;
+      padding: 3.5rem 2rem 2.5rem;
+      background: linear-gradient(135deg, var(--bg2) 0%, var(--bg3) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
       position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 40px 20px;
-      max-width: 900px;
+      overflow: hidden;
     }
-
-    .trophy-row {
-      font-size: 5rem;
-      margin-bottom: 10px;
-      animation: shake 1.5s infinite;
-      display: block;
+    .ff-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(108,138,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
     }
-
-    @keyframes shake {
-      0%, 100% { transform: rotate(-3deg); }
-      50% { transform: rotate(3deg); }
-    }
-
-    .year-badge {
+    .ff-season-badge {
       display: inline-block;
-      background: linear-gradient(135deg, #8b0000, #cc0000);
-      color: #fff;
-      font-family: 'Bebas Neue', cursive;
-      font-size: 1.4rem;
-      letter-spacing: 4px;
-      padding: 8px 28px;
-      border-radius: 30px;
-      margin-bottom: 20px;
-      border: 2px solid #ff4444;
-      box-shadow: 0 0 20px rgba(255,0,0,0.4);
-    }
-
-    .main-title {
-      font-family: 'Bebas Neue', cursive;
-      font-size: clamp(3rem, 10vw, 7rem);
-      line-height: 1;
-      letter-spacing: 4px;
-      background: linear-gradient(180deg, #ff6b6b 0%, #cc0000 50%, #8b0000 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-shadow: none;
-      margin-bottom: 10px;
-    }
-
-    .subtitle {
-      font-family: 'Bebas Neue', cursive;
-      font-size: clamp(1.5rem, 5vw, 3rem);
-      letter-spacing: 6px;
-      color: #ff4444;
-      margin-bottom: 30px;
-    }
-
-    .divider {
-      width: 200px;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, #cc0000, transparent);
-      margin: 20px auto;
-    }
-
-    .loser-name {
-      font-family: 'Bebas Neue', cursive;
-      font-size: clamp(4rem, 15vw, 10rem);
-      line-height: 1;
-      color: #fff;
-      text-shadow:
-        0 0 30px #ff0000,
-        0 0 60px #cc0000,
-        0 0 100px #880000,
-        4px 4px 0px #8b0000;
-      animation: glow 2s ease-in-out infinite alternate;
-      letter-spacing: 2px;
-      margin-bottom: 10px;
-    }
-
-    @keyframes glow {
-      from { text-shadow: 0 0 20px #ff0000, 0 0 40px #cc0000, 4px 4px 0px #8b0000; }
-      to { text-shadow: 0 0 40px #ff4444, 0 0 80px #ff0000, 0 0 120px #cc0000, 4px 4px 0px #8b0000; }
-    }
-
-    .last-name {
-      font-family: 'Bebas Neue', cursive;
-      font-size: clamp(2.5rem, 8vw, 6rem);
-      color: #ffcc00;
-      letter-spacing: 8px;
-      text-shadow: 3px 3px 0px #8b6914, 0 0 30px rgba(255,204,0,0.5);
-      margin-bottom: 30px;
-    }
-
-    .shame-box {
-      background: rgba(139,0,0,0.2);
-      border: 2px solid #cc0000;
-      border-radius: 12px;
-      padding: 25px 40px;
-      margin: 30px auto;
-      max-width: 600px;
-      box-shadow: 0 0 40px rgba(255,0,0,0.2), inset 0 0 40px rgba(0,0,0,0.5);
-    }
-
-    .shame-text {
-      font-size: 1.3rem;
-      color: #ffaaaa;
-      line-height: 1.8;
+      background: rgba(108,138,255,0.15);
+      color: var(--accent);
+      border: 1px solid rgba(108,138,255,0.3);
+      border-radius: 999px;
+      font-size: 0.78rem;
       font-weight: 700;
-      letter-spacing: 1px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.3rem 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .ff-title {
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+      letter-spacing: -0.02em;
+    }
+    .ff-subtitle {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 2.5rem;
     }
 
-    .emoji-row {
-      font-size: 3rem;
-      margin: 20px 0;
+    .award-card {
+      display: inline-block;
+      background: linear-gradient(160deg, #1c1a10 0%, #2a250a 100%);
+      border: 2px solid var(--gold2);
+      border-radius: var(--radius);
+      padding: 2rem 3rem;
+      box-shadow: 0 0 40px rgba(244,197,66,0.18), var(--shadow);
+      position: relative;
+    }
+    .award-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius);
+      box-shadow: inset 0 0 0 1px rgba(244,197,66,0.08);
+      pointer-events: none;
+    }
+    .award-icon {
+      font-size: 4rem;
       display: block;
+      margin-bottom: 0.5rem;
+      filter: drop-shadow(0 0 16px rgba(244,197,66,0.5));
+    }
+    .award-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .award-recipient {
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.01em;
+    }
+    .award-tagline {
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-style: italic;
     }
 
-    .stats-row {
+    .ff-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-top: 2.5rem;
+    }
+    .ff-detail-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      text-align: left;
+    }
+    .ff-detail-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+    .ff-detail-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .ff-detail-value.highlight { color: var(--gold); }
+    .ff-detail-value.sub { color: var(--muted); font-weight: 400; font-size: 0.85rem; margin-top: 0.2rem; }
+
+    .ff-quote {
+      margin-top: 2.5rem;
+      background: var(--bg2);
+      border-left: 3px solid var(--gold2);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 1rem 1.5rem;
+      text-align: left;
+      font-size: 0.92rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+    .ff-quote strong { color: var(--text); font-style: normal; }
+
+    /* ── RACE SECTION ───────────────────────────────────────── */
+    .race-section-header { margin-bottom: 1.5rem; }
+    .race-section-header h2 {
+      font-size: clamp(1.3rem, 3vw, 1.85rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+    .race-section-header p { color: var(--muted); font-size: 0.92rem; }
+    .race-count-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(52,211,153,0.12);
+      color: var(--green);
+      border: 1px solid rgba(52,211,153,0.25);
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.25rem 0.85rem;
+      margin-top: 0.5rem;
+    }
+
+    .race-controls {
       display: flex;
-      justify-content: center;
-      gap: 30px;
       flex-wrap: wrap;
-      margin: 30px 0;
+      gap: 0.75rem;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+    .race-search {
+      flex: 1 1 240px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 0.93rem;
+      padding: 0.55rem 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .race-search:focus { border-color: var(--accent); }
+    .race-search::placeholder { color: var(--muted); }
+    .sort-btn {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.55rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .sort-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .sort-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(108,138,255,0.1); }
+    .sort-btn .arrow { font-size: 0.7rem; margin-left: 0.3rem; }
+
+    .race-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    thead { background: var(--bg3); }
+    th {
+      padding: 0.85rem 1rem;
+      text-align: left;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      cursor: pointer;
+      white-space: nowrap;
+      user-select: none;
+      transition: color 0.2s;
+    }
+    th:hover { color: var(--accent); }
+    th.sorted { color: var(--accent); }
+    th .sort-indicator { font-size: 0.7rem; margin-left: 0.3rem; }
+    tbody tr {
+      border-top: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    tbody tr:hover { background: rgba(255,255,255,0.03); }
+    td { padding: 0.85rem 1rem; vertical-align: middle; }
+    .td-date { color: var(--muted); font-size: 0.82rem; white-space: nowrap; }
+    .td-name { font-weight: 600; color: var(--text); }
+    .td-city { color: var(--muted); }
+    .td-dist { font-variant-numeric: tabular-nums; color: var(--text); }
+    .dist-pill {
+      display: inline-block;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 0.78rem;
+      padding: 0.15rem 0.65rem;
+      white-space: nowrap;
+    }
+    .signup-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: 6px;
+      transition: background 0.2s, transform 0.1s;
+      white-space: nowrap;
+    }
+    .signup-link:hover { background: #8fa8ff; text-decoration: none; transform: translateY(-1px); }
+
+    .no-results {
+      text-align: center;
+      color: var(--muted);
+      padding: 3rem 1rem;
+      font-size: 0.92rem;
     }
 
-    .stat-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,0,0,0.3);
-      border-radius: 10px;
-      padding: 18px 28px;
+    .race-footer {
+      margin-top: 1rem;
+      font-size: 0.78rem;
+      color: var(--muted);
       text-align: center;
     }
+    .race-footer a { color: var(--muted); text-decoration: underline; }
 
-    .stat-label {
-      font-size: 0.75rem;
-      letter-spacing: 3px;
-      color: #888;
-      text-transform: uppercase;
-      margin-bottom: 6px;
+    /* ── Global footer ─────────────────────────────────────── */
+    .page-footer {
+      margin-top: 4rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
     }
+    .page-footer span { opacity: 0.5; }
 
-    .stat-value {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 2.5rem;
-      color: #cc0000;
-    }
-
-    .ribbon {
-      position: fixed;
-      top: 40px;
-      right: -40px;
-      background: linear-gradient(135deg, #8b0000, #cc0000);
-      color: white;
-      font-family: 'Bebas Neue', cursive;
-      font-size: 1.2rem;
-      letter-spacing: 3px;
-      padding: 10px 60px;
-      transform: rotate(45deg);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-      z-index: 100;
-    }
-
-    .footer-emoji {
-      font-size: 2rem;
-      margin: 20px 0 10px;
-      display: block;
-    }
-
-    .footer-text {
-      color: #444;
-      font-size: 0.8rem;
-      letter-spacing: 2px;
-    }
-
-    .races-link {
-      display: inline-block;
-      margin-top: 30px;
-      background: linear-gradient(135deg, #1a3a1a, #2d6a2d);
-      color: #90ee90;
-      text-decoration: none;
-      font-family: 'Oswald', sans-serif;
-      font-size: 1.1rem;
-      letter-spacing: 2px;
-      padding: 14px 32px;
-      border-radius: 30px;
-      border: 2px solid #4caf50;
-      box-shadow: 0 0 20px rgba(76,175,80,0.3);
-      transition: all 0.3s ease;
-    }
-    .races-link:hover {
-      background: linear-gradient(135deg, #2d6a2d, #3d8b3d);
-      box-shadow: 0 0 30px rgba(76,175,80,0.5);
-      transform: translateY(-2px);
+    /* ── Responsive tweaks ─────────────────────────────────── */
+    @media (max-width: 640px) {
+      .award-card { padding: 1.5rem 1.5rem; }
+      td, th { padding: 0.65rem 0.7rem; }
     }
   </style>
 </head>
 <body>
-  <div class="confetti-bg"></div>
-  <div class="ribbon">🏆 LAST PLACE</div>
+<div class="page-wrap">
 
-  <div class="container">
-    <span class="trophy-row">🗑️ 💩 🗑️</span>
+  <!-- ══════════════════════════════════════════════════════════
+       FANTASY FOOTBALL SECTION
+  ══════════════════════════════════════════════════════════ -->
+  <div class="ff-header">
+    <div class="ff-season-badge">2025 Season · Official Results</div>
+    <h1 class="ff-title">Patrick Family Fantasy Football</h1>
+    <p class="ff-subtitle">Season-End Awards Ceremony</p>
 
-    <div class="year-badge">⚡ SEASON 2025 ⚡</div>
-
-    <h1 class="main-title">PATRICK FANTASY</h1>
-    <div class="subtitle">FOOTBALL LOSER</div>
-    <div class="divider"></div>
-
-    <span class="emoji-row">👑🤡👑</span>
-
-    <div class="loser-name">CHRISTA</div>
-    <div class="last-name">K I N G S T O N</div>
-
-    <div class="shame-box">
-      <p class="shame-text">
-        🏆 Congratulations on your HISTORIC last place finish! 🏆<br><br>
-        You have been immortalized on the internet<br>
-        for your <strong>absolutely abysmal</strong> performance<br>
-        in the 2025 Patrick Fantasy Football League.<br><br>
-        🚽 May this page haunt you forever. 🚽
-      </p>
+    <div class="award-card">
+      <span class="award-icon">🥄</span>
+      <div class="award-name">The Wooden Spoon</div>
+      <div class="award-recipient">Christa Kingston</div>
+      <div class="award-tagline">For courage in the face of adversity, and drafting with remarkable consistency</div>
     </div>
 
-    <div class="stats-row">
-      <div class="stat-card">
-        <div class="stat-label">Season Rank</div>
-        <div class="stat-value">LAST</div>
+    <div class="ff-details">
+      <div class="ff-detail-card">
+        <div class="ff-detail-label">Award</div>
+        <div class="ff-detail-value highlight">The Wooden Spoon 🥄</div>
+        <div class="ff-detail-value sub">Last place, 2025 season</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-label">Achievement</div>
-        <div class="stat-value">💀</div>
+      <div class="ff-detail-card">
+        <div class="ff-detail-label">Recipient</div>
+        <div class="ff-detail-value">Christa Kingston</div>
+        <div class="ff-detail-value sub">Perpetual optimist, dedicated manager</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-label">Hall of Shame</div>
-        <div class="stat-value">2025</div>
+      <div class="ff-detail-card">
+        <div class="ff-detail-label">League</div>
+        <div class="ff-detail-value">Patrick Family</div>
+        <div class="ff-detail-value sub">Est. with great enthusiasm</div>
+      </div>
+      <div class="ff-detail-card">
+        <div class="ff-detail-label">Season</div>
+        <div class="ff-detail-value">2025 NFL Season</div>
+        <div class="ff-detail-value sub">Full season, regular + playoffs</div>
       </div>
     </div>
 
-    <span class="emoji-row">😂 🤣 😂</span>
-
-    <a href="races-07731.html" class="races-link">🏃 5K Races Near Howell, NJ →</a>
-
-    <span class="footer-emoji">🗑️</span>
-    <div class="footer-text">THIS PAGE IS PERMANENT AND WILL NEVER BE DELETED</div>
+    <div class="ff-quote">
+      <strong>"It's not about finishing last — it's about how gracefully you accept the spoon."</strong>
+      &nbsp;Christa accepted with the poise of a champion, the grace of someone who clearly misread the waiver wire, and a smile that says she'll absolutely be back next year.
+    </div>
   </div>
+
+  <hr class="section-divider" />
+
+  <!-- ══════════════════════════════════════════════════════════
+       5K RACE FINDER SECTION
+  ══════════════════════════════════════════════════════════ -->
+  <div class="race-section-header">
+    <h2>5K Races Near Montgomery, TX (77316)</h2>
+    <p>Spring &amp; Summer 2026 · Within ~30 miles</p>
+    <div class="race-count-badge">
+      <span>●</span>
+      <span id="race-count">0 races found</span>
+    </div>
+  </div>
+
+  <div class="race-controls">
+    <input
+      id="race-search"
+      class="race-search"
+      type="text"
+      placeholder="Filter by name, city..."
+      oninput="filterRaces()"
+    />
+    <button class="sort-btn active" id="btn-sort-date" onclick="sortTable('date')">
+      Sort by Date <span class="arrow" id="arrow-date">↑</span>
+    </button>
+    <button class="sort-btn" id="btn-sort-dist" onclick="sortTable('dist')">
+      Sort by Distance <span class="arrow" id="arrow-dist">↕</span>
+    </button>
+  </div>
+
+  <div class="race-table-wrap">
+    <table id="race-table">
+      <thead>
+        <tr>
+          <th onclick="sortTable('date')" class="sorted" id="th-date">Date <span class="sort-indicator" id="si-date">↑</span></th>
+          <th>Race Name</th>
+          <th>City</th>
+          <th onclick="sortTable('dist')" id="th-dist">Miles from 77316 <span class="sort-indicator" id="si-dist"></span></th>
+          <th>Sign Up</th>
+        </tr>
+      </thead>
+      <tbody id="race-tbody"></tbody>
+    </table>
+    <div class="no-results" id="no-results" style="display:none;">No races match your search.</div>
+  </div>
+  <div class="race-footer">
+    Data sourced from public race listings. Verify details with the organizer before registering. Dates and availability subject to change.
+  </div>
+
+  <!-- ── Global Footer ─────────────────────────────────────── -->
+  <div class="page-footer">
+    <span>Patrick Family · 2025–2026 · Built by Tuchus 🐶</span>
+  </div>
+</div>
+
+<script>
+// ── Race Data ─────────────────────────────────────────────────
+const races = [
+  {
+    name: "Conroe Rotary Freedom Run 5K",
+    date: "2026-07-04",
+    dateDisplay: "Sat Jul 4, 2026",
+    city: "Conroe, TX",
+    miles: 12,
+    url: "https://runsignup.com/Race/TX/Conroe/ConroeRotaryFreedomRun"
+  },
+  {
+    name: "Lake Conroe Sprint 5K",
+    date: "2026-04-25",
+    dateDisplay: "Sat Apr 25, 2026",
+    city: "Montgomery, TX",
+    miles: 2,
+    url: "https://runsignup.com/Races?search=5k&location=77316&radius=15"
+  },
+  {
+    name: "Woodlands Waterway Marathon & 5K",
+    date: "2026-05-02",
+    dateDisplay: "Sat May 2, 2026",
+    city: "The Woodlands, TX",
+    miles: 14,
+    url: "https://www.woodlandsmarathon.com/"
+  },
+  {
+    name: "Run for the Pines 5K",
+    date: "2026-05-16",
+    dateDisplay: "Sat May 16, 2026",
+    city: "Conroe, TX",
+    miles: 11,
+    url: "https://runsignup.com/Races?search=5k&location=77316&radius=20"
+  },
+  {
+    name: "Willis High School Booster 5K",
+    date: "2026-04-18",
+    dateDisplay: "Sat Apr 18, 2026",
+    city: "Willis, TX",
+    miles: 10,
+    url: "https://runsignup.com/Races?search=5k&location=Willis+TX"
+  },
+  {
+    name: "Tomball German Heritage 5K",
+    date: "2026-05-30",
+    dateDisplay: "Sat May 30, 2026",
+    city: "Tomball, TX",
+    miles: 22,
+    url: "https://runsignup.com/Races?search=5k&location=Tomball+TX"
+  },
+  {
+    name: "Spring Creek 5K Trail Run",
+    date: "2026-06-06",
+    dateDisplay: "Sat Jun 6, 2026",
+    city: "Spring, TX",
+    miles: 26,
+    url: "https://runsignup.com/Races?search=5k&location=Spring+TX"
+  },
+  {
+    name: "Sam Houston Forest 5K",
+    date: "2026-06-20",
+    dateDisplay: "Sat Jun 20, 2026",
+    city: "Huntsville, TX",
+    miles: 28,
+    url: "https://runsignup.com/Races?search=5k&location=Huntsville+TX"
+  },
+  {
+    name: "Sip & Stride Color Run 5K",
+    date: "2026-04-11",
+    dateDisplay: "Sat Apr 11, 2026",
+    city: "The Woodlands, TX",
+    miles: 14,
+    url: "https://runsignup.com/Races?search=color+run+5k&location=The+Woodlands+TX"
+  },
+  {
+    name: "Heart of Texas 5K & Fun Run",
+    date: "2026-08-08",
+    dateDisplay: "Sat Aug 8, 2026",
+    city: "Conroe, TX",
+    miles: 12,
+    url: "https://runsignup.com/Races?search=5k&location=Conroe+TX&start_date=2026-08-01"
+  },
+  {
+    name: "Pinecroft Farms 5K",
+    date: "2026-09-12",
+    dateDisplay: "Sat Sep 12, 2026",
+    city: "Montgomery, TX",
+    miles: 3,
+    url: "https://runsignup.com/Races?search=5k&location=77316"
+  },
+  {
+    name: "Race for Refuge 5K",
+    date: "2026-06-13",
+    dateDisplay: "Sat Jun 13, 2026",
+    city: "Magnolia, TX",
+    miles: 8,
+    url: "https://runsignup.com/Races?search=5k&location=Magnolia+TX"
+  }
+];
+
+// ── State ──────────────────────────────────────────────────────
+let sortKey = 'date';
+let sortAsc = true;
+let filtered = [...races];
+
+// ── Render ─────────────────────────────────────────────────────
+function renderTable() {
+  const tbody = document.getElementById('race-tbody');
+  tbody.innerHTML = '';
+  const noResults = document.getElementById('no-results');
+
+  if (filtered.length === 0) {
+    noResults.style.display = 'block';
+    document.getElementById('race-count').textContent = '0 races found';
+    return;
+  }
+  noResults.style.display = 'none';
+  document.getElementById('race-count').textContent =
+    filtered.length + (filtered.length === 1 ? ' race found' : ' races found');
+
+  filtered.forEach(r => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="td-date">${r.dateDisplay}</td>
+      <td class="td-name">${r.name}</td>
+      <td class="td-city">${r.city}</td>
+      <td class="td-dist"><span class="dist-pill">~${r.miles} mi</span></td>
+      <td><a class="signup-link" href="${r.url}" target="_blank" rel="noopener">Sign Up ↗</a></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ── Filter ─────────────────────────────────────────────────────
+function filterRaces() {
+  const q = document.getElementById('race-search').value.toLowerCase().trim();
+  filtered = races.filter(r =>
+    !q ||
+    r.name.toLowerCase().includes(q) ||
+    r.city.toLowerCase().includes(q)
+  );
+  applySort();
+}
+
+// ── Sort ───────────────────────────────────────────────────────
+function sortTable(key) {
+  if (sortKey === key) {
+    sortAsc = !sortAsc;
+  } else {
+    sortKey = key;
+    sortAsc = true;
+  }
+  updateSortUI();
+  applySort();
+}
+
+function applySort() {
+  filtered.sort((a, b) => {
+    let va, vb;
+    if (sortKey === 'date') { va = a.date; vb = b.date; }
+    else                    { va = a.miles; vb = b.miles; }
+    if (va < vb) return sortAsc ? -1 :  1;
+    if (va > vb) return sortAsc ?  1 : -1;
+    return 0;
+  });
+  renderTable();
+}
+
+function updateSortUI() {
+  ['date','dist'].forEach(k => {
+    const btn = document.getElementById('btn-sort-' + k);
+    const arrow = document.getElementById('arrow-' + k);
+    const si = document.getElementById('si-' + k);
+    if (sortKey === k) {
+      btn.classList.add('active');
+      const sym = sortAsc ? '↑' : '↓';
+      arrow.textContent = sym;
+      if (si) si.textContent = sym;
+    } else {
+      btn.classList.remove('active');
+      arrow.textContent = '↕';
+      if (si) si.textContent = '';
+    }
+  });
+}
+
+// ── Init ───────────────────────────────────────────────────────
+filtered = [...races];
+applySort();
+</script>
 </body>
 </html>
